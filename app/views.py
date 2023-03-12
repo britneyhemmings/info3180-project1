@@ -1,12 +1,10 @@
-"""
-Flask Documentation:     https://flask.palletsprojects.com/
-Jinja2 Documentation:    https://jinja.palletsprojects.com/
-Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
-This file contains the routes for your application.
-"""
+import os
+from app import app, db
+from flask import render_template, request, redirect, url_for, flash, session, abort, send_from_directory
+from werkzeug.utils import secure_filename
+from app.models import PropertyInfo
+from app.forms import PropertyForm
 
-from app import app
-from flask import render_template, request, redirect, url_for
 
 
 ###
@@ -25,18 +23,36 @@ def about():
     return render_template('about.html', name="Mary Jane")
 
 
+@app.route('/property', methods=['POST', 'GET'])
+def property():
+    form = PropertyForm()
+
+    # validate the entire form submission
+    if form.validate_on_submit():
+        title = form.title.data
+        description = form.desc.data
+        rooms = form.bedrooms.data
+        bathrooms = form.bathrooms.data
+        price = form.price.data
+        ptype = form.type.data
+        location = form.location.data
+
+    return render_template("newproperty.html", form=form)
+
+
 ###
 # The functions below should be applicable to all Flask apps.
 ###
 
-# Display Flask WTF errors as Flash messages
+
+# Flash errors from the form if validation fails
 def flash_errors(form):
     for field, errors in form.errors.items():
         for error in errors:
             flash(u"Error in the %s field - %s" % (
                 getattr(form, field).label.text,
                 error
-            ), 'danger')
+), 'danger')
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
@@ -49,8 +65,7 @@ def send_text_file(file_name):
 def add_header(response):
     """
     Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also tell the browser not to cache the rendered page. If we wanted
-    to we could change max-age to 600 seconds which would be 10 minutes.
+    and also to cache the rendered page for 10 minutes.
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
@@ -61,3 +76,5 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
+

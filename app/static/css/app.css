@@ -1,3 +1,9 @@
 body {
     padding-top: 5rem;
 }
+
+section{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 25px;
+}
