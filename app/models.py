@@ -7,7 +7,7 @@ class PropertyInfo(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
-    description = db.Column(db.String(250))
+    description = db.Column(db.String(1000))
     rooms = db.Column(db.String(80))
     bathrooms = db.Column(db.String(80))
     price = db.Column(db.String(100))
@@ -15,7 +15,7 @@ class PropertyInfo(db.Model):
     pType = db.Column(db.String(80))
     image = db.Column(db.String(255)) #filename
 
-    def init(self,title,description,rooms,bathrooms,price,pType,location, image):
+    def __init__(self,title,description,rooms,bathrooms,price,pType,location, image):
         self.title = title
         self.description = description
         self.rooms = rooms

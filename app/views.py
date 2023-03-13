@@ -23,21 +23,53 @@ def about():
     return render_template('about.html', name="Mary Jane")
 
 
-@app.route('/property', methods=['POST', 'GET'])
+@app.route('/properties/create', methods=['POST', 'GET'])
 def property():
     form = PropertyForm()
 
-    # validate the entire form submission
-    if form.validate_on_submit():
-        title = form.title.data
-        description = form.desc.data
-        rooms = form.bedrooms.data
-        bathrooms = form.bathrooms.data
-        price = form.price.data
-        ptype = form.type.data
-        location = form.location.data
+    if request.method == "POST":
+        # validate the entire form submission
+        if form.validate_on_submit():
+            title = form.title.data
+            description = form.description.data
+            rooms = form.rooms.data
+            bathrooms = form.bathrooms.data
+            price = form.price.data
+            pType = form.pType.data
+            location = form.location.data
+            image = form.image.data
+
+            filename = secure_filename(image.filename)
+
+            newProperty = PropertyInfo(title,description,rooms,bathrooms,price,pType,location,filename)
+
+            db.session.add(newProperty)
+            db.session.commit()
+
+            image.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], filename
+            ))
+
+            flash('Property Added Successfully', 'success')
+            return redirect(url_for('getProperties')) 
 
     return render_template("newproperty.html", form=form)
+
+@app.route('/properties')
+def getProperties():
+    """Render the website's properties page."""
+    properties = PropertyInfo.query.all()
+    return render_template('properties.html', properties = properties)
+
+@app.route('/properties/<propertyid>')
+def getProperty(propertyid):
+    """Render the website's individual property page."""
+    idvProperty = PropertyInfo.query.filter_by(id=propertyid).first()
+    return render_template('property.html', property = idvProperty)
+
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)
 
 
 ###
