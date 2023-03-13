@@ -20,8 +20,6 @@ section{
     grid-gap: 25px;
 }
 
-
-
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -59,9 +57,81 @@ section{
 .price
 {
     background-color: rgb(53, 165, 240);
+    width: 25%;
+    color: white;
+    text-align: center;
+    margin-left: 5px;
+    border-radius: 20px;
+}
+
+.ps-price
+{
+    background-color: rgb(53, 165, 240);
     width: 40%;
     color: white;
     text-align: center;
     margin-left: 5px;
     border-radius: 20px;
+}
+
+
+.type
+{
+    background-color: rgb(240, 196, 53);
+    width: 20%;
+    color: white;
+    text-align: center;
+    margin-left: 5px;
+    border-radius: 20px;
+    text-transform: capitalize
+}
+
+.property {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 50px;
+}
+
+.property img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.prop-title{
+    padding-bottom: 10px;
+}
+
+.description{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.price-type{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+}
+
+.rooms{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+}
+
+.location, .bedrooms, .bathrooms{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 5px;
+}
+
+
+
+.property a{
+    height: 40px;
+    width: 50px;
 }
